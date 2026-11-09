@@ -13,7 +13,6 @@ import okhttp3.Request
 import okhttp3.Response
 import okhttp3.HttpUrl
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.suspendOperator
 import java.io.IOException
 import kotlin.coroutines.resumeWithException
 
