@@ -24,7 +24,7 @@ class MainActivity : ComponentActivity() {
         FavoritesStore.init(this)
 
         setContent {
-            com.moviebox.ui.MovieBoxApplication()
+            com.moviebox.ui.MovieBoxComposeApp()
         }
     }
 
