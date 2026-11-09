@@ -21,18 +21,18 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
-          cache: gradle
 
+      # gradlew रिपॉज़िटरी में नहीं है, इसलिए Gradle खुद इंस्टॉल करवाते हैं
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: 8.7
 
       - name: Accept Android SDK licenses
-        run: |
-          yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses
-          echo "Android licenses accepted"
+        run: yes | $ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
       - name: Assemble Debug APK
-        run: ./gradlew :app:assembleDebug
+        run: gradle :app:assembleDebug --stacktrace
 
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
