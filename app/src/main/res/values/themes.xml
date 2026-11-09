@@ -37,14 +37,4 @@
     <style name="Theme.MovieBox.AppBarOverlay" parent="ThemeOverlay.Material3.Dark.ActionBar" />
 
     <style name="Theme.MovieBox.PopupOverlay" parent="ThemeOverlay.Material3.Light" />
-
-    <style name="Widget.MovieBox.MediaSession" parent="androidx.media3.exoplayer.ExoPlayer.MediaSession">
-        <item name="colorPrimary">@color/moviebox_primary</item>
-    </style>
-
-    <style name="Widget.MovieBox.Card" parent="Widget.Material3.Card">
-        <item name="cardCornerRadius">12dp</item>
-        <item name="strokeWidth">1dp</item>
-        <item name="strokeColor">@color/moviebox_outline</item>
-    </style>
 </resources>
