@@ -1,10 +1,8 @@
 package com.moviebox.ui
 
-import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LocalContext
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.ui.Modifier
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -12,29 +10,18 @@ import androidx.compose.runtime.setValue
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.moviebox.storage.ConfigStore
-import com.moviebox.storage.HistoryStore
-import com.moviebox.storage.FavoritesStore
+import com.moviebox.ui.theme.MovieBoxScaffold
 
 @Composable
 fun MovieBoxComposeApp() {
-    val context = LocalContext.current
-
-    // Initialize singleton stores
-    DisposableEffect(Unit) {
-        ConfigStore.instance?.apply { init(context) }
-        HistoryStore.instance?.apply { init(context) }
-        FavoritesStore.instance?.apply { init(context) }
-        cleanup { /* cleanup on composition drop */ }
-    }
-
+    // Stores MainActivity.onCreate() में पहले ही init हो चुके हैं
     val navController = rememberNavController()
 
     MovieBoxScaffold(darkTheme = true) {
         NavHost(
             navController = navController,
             startDestination = "home",
-            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
+            modifier = Modifier.fillMaxSize(),
         ) {
             composable("home") {
                 HomeScreen(
@@ -54,7 +41,7 @@ fun MovieBoxComposeApp() {
             }
 
             composable("details/{id}") { backStackEntry ->
-                val id = backStackEntry.args?.getString("id") ?: ""
+                val id = backStackEntry.arguments?.getString("id") ?: ""
                 val details = remember { MediaDetails(
                     id = com.moviebox.model.ProviderMediaId(
                         com.moviebox.model.ProviderKind.MovieBox,
