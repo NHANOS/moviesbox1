@@ -35,7 +35,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
-import androidx.compose.ui.text.font.FontSize
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
@@ -132,7 +131,7 @@ fun MovieBoxSearchField(
         label = { Text("Search") },
         singleLine = true,
         modifier = Modifier.fillMaxWidth(),
-        textStyle = TextStyle(fontSize = FontSize(14.sp)),
+        textStyle = TextStyle(fontSize = 14.sp),
         colors = androidx.compose.material3.OutlinedTextFieldDefaults.colors(),
         trailingIcon = {
             IconButton(onClick = { text = "" }) {
