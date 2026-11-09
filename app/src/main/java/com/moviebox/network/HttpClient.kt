@@ -8,7 +8,6 @@ import com.moviebox.model.ProviderKind
 import com.moviebox.model.ProviderMediaId
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withContext
@@ -36,7 +35,6 @@ class HttpClient {
             .readTimeout(60, TimeUnit.SECONDS)
             .writeTimeout(60, TimeUnit.SECONDS)
             .followRedirects(true)
-            .followSslErrors(false)
             .build()
     }
 
