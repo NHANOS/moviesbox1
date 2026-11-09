@@ -1,75 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.moviebox">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <!-- Permissions for network access, storage, and media playback -->
     <uses-permission android:name="android.permission.INTERNET"/>
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK"/>
-    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
 
-    <!-- Required for ExoPlayer media sessions -->
     <uses-feature
         android:name="android.hardware.audio.output"
         android:required="false"/>
 
     <application
+        android:name=".MovieBoxApplication"
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
+        android:usesCleartextTraffic="true"
         android:theme="@style/Theme.MovieBox">
 
         <activity
             android:name=".app.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
-            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|fontScale|uiMode"
+            android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|uiMode"
             android:windowSoftInputMode="stateHidden">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
-
-            <!-- Handle deep links for stream URLs -->
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW"/>
-                <category android:name="android.intent.category.DEFAULT"/>
-                <category android:name="android.intent.category.BROWSEABLE"/>
-                <data android:scheme="http"/>
-                <data android:scheme="https"/>
-                <data android:host="*"/>
-            </intent-filter>
-
-            <!-- Media session for playback controls -->
-            <meta-data
-                android:name="com.google.android.media.AudioAttributes"
-                android:resource="@style/Widget.MovieBox.MediaSession"/>
-
-            <meta-data
-                android:name="com.google.android.media.AudioUsage"
-                android:resource="@integer/usage_ambient"/>
-
-            <meta-data
-                android:name="androidx.media3.exoplayer.ExoPlayerProvider"
-                android:value="com.google.android.media3.extra.ExoPlayerInitializerService"/>
         </activity>
-
-        <!-- Media3 Initialization Service -->
-        <service
-            android:name="com.google.android.media3.extra.ExoPlayerInitializerService"
-            android:exported="false"
-            android:stopWithTask="false">
-            <intent-filter>
-                <action android:name="com.google.android.media3.extra.ENABLED"/>
-            </intent-filter>
-        </service>
 
     </application>
 </manifest>
