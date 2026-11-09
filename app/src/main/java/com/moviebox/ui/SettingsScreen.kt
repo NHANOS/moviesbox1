@@ -23,24 +23,12 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.key.Key
-import androidx.compose.ui.input.key.KeyEvent
-import androidx.compose.ui.input.key.keyEvent
-import androidx.compose.ui.keyboard.KeyboardCapitalization
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.KeyboardType
-import androidx.compose.ui.text.StringKey
-import androidx.compose.ui.text.input.KeyboardShortcut
-import androidx.compose.ui.text.input.KeyboardShortcut
-import androidx.compose.ui.text.input.Keyboard
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.TextFieldValue
-import androidx.compose.ui.text.input.TextField
-import androidx.compose.ui.text.input.TextFieldDefaults
-import androidx.compose.ui.text.input.TextFieldSpec
+import androidx.compose.ui.text.input.KeyboardOptions
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.dpAnchor
-import androidx.compose.ui.unit.pt
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Folder
 import com.moviebox.model.ProviderKind
 
 @Composable
@@ -78,15 +66,16 @@ fun SettingsScreen(
                 style = MaterialTheme.typography.bodyLarge,
             )
 
-            MaterialTheme.chipGroup(chips = chipThemeChoices) {
-                chipThemeChoices.forEach { chip ->
-                    if (chip.text!!.toString().lowercase().startsWith(themeSelection.lowercase())) {
-                        this.select(chip)
-                    }
-                    this.chip(
-                        text = chip.text,
-                        onSelected = { themeSelection = chip.text.toString() },
-                        selected = themeSelection == chip.text.toString(),
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                listOf("Mocha", "Latte", "Macchiato", "Frappe", "Nord", "Tokyo Night", "Dracula", "Gruvbox", "Rose Pine").forEach { themeName ->
+                    androidx.compose.material3.FilterChip(
+                        selected = themeSelection == themeName,
+                        onClick = { themeSelection = themeName },
+                        label = { Text(themeName, style = MaterialTheme.typography.labelMedium) },
+                        colors = androidx.compose.material3.FilterChipDefaults.colors(),
                     )
                 }
             }
@@ -118,12 +107,16 @@ fun SettingsScreen(
                 style = MaterialTheme.typography.bodyLarge,
             )
 
-            MaterialTheme.chipGroup(chips = playerChoices) {
-                playerChoices.forEach { chip ->
-                    this.chip(
-                        text = chip.text,
-                        onSelected = {},
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(8.dp),
+            ) {
+                listOf("Auto", "MPV", "VLC", "IINA", "Android Player").forEach { playerName ->
+                    androidx.compose.material3.FilterChip(
                         selected = false,
+                        onClick = { /* handle selection */ },
+                        label = { Text(playerName, style = MaterialTheme.typography.labelMedium) },
+                        colors = androidx.compose.material3.FilterChipDefaults.colors(),
                     )
                 }
             }
@@ -134,7 +127,7 @@ fun SettingsScreen(
                 onValueChange = { downloadDir = it },
                 label = { Text("Download directory") },
                 modifier = Modifier.fillMaxWidth(),
-                keyboardType = KeyboardType.Email,
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 singleLine = true,
                 trailingIcon = {
                     IconButton(onClick = { downloadDir = "" }) {
@@ -153,7 +146,7 @@ fun SettingsScreen(
                     onValueChange = { vlcPath = it },
                     label = { Text("VLC path") },
                     modifier = Modifier.weight(0.3f),
-                    keyboardType = KeyboardType.Text,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     singleLine = true,
                 )
                 OutlinedTextField(
@@ -161,7 +154,7 @@ fun SettingsScreen(
                     onValueChange = { mpvPath = it },
                     label = { Text("MPV path") },
                     modifier = Modifier.weight(0.3f),
-                    keyboardType = KeyboardType.Text,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     singleLine = true,
                 )
                 OutlinedTextField(
@@ -169,7 +162,7 @@ fun SettingsScreen(
                     onValueChange = { iinaPath = it },
                     label = { Text("IINA path") },
                     modifier = Modifier.weight(0.3f),
-                    keyboardType = KeyboardType.Text,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text),
                     singleLine = true,
                 )
             }
@@ -177,36 +170,10 @@ fun SettingsScreen(
             // Save button
             Button(
                 onClick = onSave,
-                modifier = Modifier.fillMaxWidth().padding(TopPadding(24.dp)),
+                modifier = Modifier.fillMaxWidth().padding(top = 24.dp),
             ) {
                 Text("Save", style = MaterialTheme.typography.titleMedium)
             }
         }
     }
-
-    @Composable
-    private val chipThemeChoices = listOf(
-        ChipItem("Mocha"),
-        ChipItem("Latte"),
-        ChipItem("Macchiato"),
-        ChipItem("Frappe"),
-        ChipItem("Nord"),
-        ChipItem("Tokyo Night"),
-        ChipItem("Dracula"),
-        ChipItem("Gruvbox"),
-        ChipItem("Rose Pine"),
-    )
-
-    @Composable
-    private val playerChoices = listOf(
-        ChipItem("Auto"),
-        ChipItem("MPV"),
-        ChipItem("VLC"),
-        ChipItem("IINA"),
-        ChipItem("Android Player"),
-    )
-
-    @Composable
-    private data class ChipItem(
-        val text: String?,
-    )
+}

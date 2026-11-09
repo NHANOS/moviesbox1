@@ -392,6 +392,9 @@ fun ReleaseRow(
     }
 }
 
+/**
+ * Format file size for display.
+ */
 fun formatFileSize(bytes: Long): String {
     return when {
         bytes >= 1_073_741_824 -> String.format("%.1f GB", bytes / 1_073_741_824.0)
@@ -400,9 +403,3 @@ fun formatFileSize(bytes: Long): String {
         else -> "$bytes B"
     }
 }
-
-import androidx.compose.foundation.background
-import androidx.compose.material3.Box
-import androidx.compose.material3.Icon
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack

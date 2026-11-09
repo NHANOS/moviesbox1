@@ -1,5 +1,6 @@
 package com.moviebox.network
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.moviebox.model.ProviderError
@@ -11,8 +12,10 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.async
 import kotlinx.coroutines.cancel
 import kotlinx.coroutines.withContext
+import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
+import okhttp3.RequestBody
 import okhttp3.Response
 import okhttp3.HttpUrl
 import java.io.IOException
@@ -46,7 +49,7 @@ class HttpClient {
             val response = client.newCall(request).execute()
             try {
                 if (!response.isSuccessful) {
-                    throw IOException("Unexpected code $${response.code} for $url")
+                    throw IOException("Unexpected code ${response.code} for $url")
                 }
                 response.body?.string() ?: throw IOException("Empty response body")
             } finally {
@@ -60,7 +63,7 @@ class HttpClient {
      */
     suspend fun getWithHeaders(url: String, headers: (String, String)): String {
         return withContext(Dispatchers.IO) {
-            val.Builder requestBuilder = Request.Builder().url(url)
+            val requestBuilder = Request.Builder().url(url)
             headers.forEach { (name, value) ->
                 requestBuilder.header(name, value)
             }
@@ -68,7 +71,7 @@ class HttpClient {
             val response = client.newCall(request).execute()
             try {
                 if (!response.isSuccessful) {
-                    throw IOException("Unexpected code $${response.code} for $url")
+                    throw IOException("Unexpected code ${response.code} for $url")
                 }
                 response.body?.string() ?: throw IOException("Empty response body")
             } finally {
@@ -82,11 +85,12 @@ class HttpClient {
      */
     suspend fun post(url: String, body: String): String {
         return withContext(Dispatchers.IO) {
-            val request = Request.Builder().url(url).post(okhttp3.RequestBody.create(body, okhttp3.MediaType.get("application/json"))).build()
+            val requestBody = RequestBody.create(body, MediaType.parse("application/json"))
+            val request = Request.Builder().url(url).post(requestBody).build()
             val response = client.newCall(request).execute()
             try {
                 if (!response.isSuccessful) {
-                    throw IOException("Unexpected code $${response.code} for POST $url")
+                    throw IOException("Unexpected code ${response.code} for POST $url")
                 }
                 response.body?.string() ?: throw IOException("Empty response body")
             } finally {

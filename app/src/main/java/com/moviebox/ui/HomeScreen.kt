@@ -160,6 +160,8 @@ data class AppStateUi(
     val hasActiveModal: Boolean = false,
     val streamingEnabled: Boolean = true,
     val tvEnabled: Boolean = true,
+    val activeSearchRequests: Int = 0,
+    val isLoading: Boolean = false,
     val searchQuery: String = "",
     val areaWidth: Int = 1080,
 )

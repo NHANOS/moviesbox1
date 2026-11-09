@@ -2,8 +2,7 @@ package com.moviebox.provider
 
 import android.util.Log
 import com.moviebox.model.ProviderModels.*
-import com.moviebox.network.HttpClient
-import com.moviebox.model.ProviderModels.ProviderModels.Companion.md5HexBytes
+import com.moviebox.model.StringUtils
 import okhttp3.MediaType
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -501,7 +500,7 @@ class MovieBoxProvider(
     private fun generateXClientToken(ts: Long): String {
         val tsStr = ts.toString()
         val reversedTs = tsStr.reversed()
-        val hashVal = md5HexBytes(reversedTs.toByteArray())
+        val hashVal = StringUtils.md5HexBytes(reversedTs.toByteArray())
         return "$tsStr,$hashVal"
     }
 
@@ -544,7 +543,7 @@ class MovieBoxProvider(
             } else {
                 bodyBytes
             }
-            (md5HexBytes(truncated), len.toString())
+            (StringUtils.md5HexBytes(truncated), len.toString())
         } else {
             ("", "")
         }
@@ -592,14 +591,14 @@ class MovieBoxProvider(
         return mac.doFinal(data)
     }
 
-    private fun md5HexBytes(data: ByteArray): String {
+    private fun StringUtils.md5HexBytes(data: ByteArray): String {
         val digest = MessageDigest.getInstance("MD5").digest(data)
         return digest.joinToString("") { "%02x".format(it) }
     }
 
     private fun generateXClientBuild(tsMs: Long): String {
         val stamp = buildTagStamp(tsMs, random.nextInt(1000))
-        val hash = md5HexBytes("$STOCK_CERT_SHA256$BUILD_TAG_SALT$stamp".toByteArray())
+        val hash = StringUtils.md5HexBytes("$STOCK_CERT_SHA256$BUILD_TAG_SALT$stamp".toByteArray())
         return "$stamp.$hash"
     }
 

@@ -2,18 +2,17 @@ package com.moviebox.player
 
 import android.content.Context
 import android.media.MediaCodecList
-import android.media.PlaybackParams
 import android.net.Uri
 import android.util.Log
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Player.Listener
-import androidx.media3.common.config.DefaultMediaItemFactory
+import androidx.media3.common.Player.PlaybackException
+import androidx.media3.common.PlaybackParameters
 import androidx.media3.common.util.Util
 import androidx.media3.datasource.DataSource
 import androidx.media3.datasource.DefaultDataSource
-import androidx.media3.datasource.DefaultHttpDataSource
 import androidx.media3.exoplayer.DefaultLoadControl
 import androidx.media3.exoplayer.DefaultRenderersFactory
 import androidx.media3.exoplayer.ExoPlayer
@@ -21,10 +20,8 @@ import androidx.media3.exoplayer.source.DefaultMediaSourceFactory
 import androidx.media3.exoplayer.trackselection.AdaptiveTrackSelection
 import androidx.media3.exoplayer.trackselection.DefaultTrackSelector
 import com.moviebox.model.PlaybackSource
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Channel
-import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.util.concurrent.TimeUnit
 
@@ -51,14 +48,13 @@ class MovieBoxPlayer private constructor(context: Context) {
     private var isPlaying: Boolean = false
 
     private val positionChannel = Channel<Float>(Channel.UNLIMITED)
-    private val playbackStateChannel = Channel<PlaybackState>(Channel.UNLIMITED)
+    private val playbackStateChannel = Channel<Player.PlaybackState>(Channel.UNLIMITED)
 
     private var lastResumeRequestMs: Long = 0
 
     init {
         this.context = context.applicationContext
 
-        val build = android.os.Build.VERSION.SDK_INT
         val audioAttributes = AudioAttributes.Builder()
             .setUsage(android.media.AudioAttributes.USAGE_MEDIA)
             .setContentType(android.media.AudioAttributes.CONTENT_TYPE_MOVIE)
@@ -77,10 +73,11 @@ class MovieBoxPlayer private constructor(context: Context) {
             .setBackBufferDurationMs(15_000)
             .build()
 
-        player = ExoPlayer.Builder(context, renderersFactory)
-            .setAudioAttributes(audioAttributes, false)
+        player = ExoPlayer.Builder(context)
+            .setRenderersFactory(renderersFactory)
             .setTrackSelector(trackSelector)
             .setLoadControl(loadControl)
+            .setAudioAttributes(audioAttributes)
             .build()
 
         player.addListener(object : Listener {
@@ -250,7 +247,7 @@ class MovieBoxPlayer private constructor(context: Context) {
      * Set playback speed.
      */
     fun setPlaybackSpeed(speed: Float) {
-        player.setPlaybackSpeed(speed)
+        player.setPlaybackParameters(PlaybackParameters(speed))
     }
 
     /**

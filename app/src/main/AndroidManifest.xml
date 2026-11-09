@@ -26,7 +26,7 @@
         android:theme="@style/Theme.MovieBox">
 
         <activity
-            android:name=".MainActivity"
+            android:name=".app.MainActivity"
             android:exported="true"
             android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden|screenSize|smallestScreenSize|fontScale|uiMode"
@@ -68,16 +68,6 @@
             android:stopWithTask="false">
             <intent-filter>
                 <action android:name="com.google.android.media3.extra.ENABLED"/>
-            </intent-filter>
-        </service>
-
-        <!-- Persistent media playback service -->
-        <service
-            android:name=".player.MediaService"
-            android:exported="false"
-            android:permission="android.permission.BIND_SERVICE">
-            <intent-filter>
-                <action android:name="android.media.browse.MediaBrowserService"/>
             </intent-filter>
         </service>
 

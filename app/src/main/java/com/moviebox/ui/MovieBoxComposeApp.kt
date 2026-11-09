@@ -2,35 +2,23 @@ package com.moviebox.ui
 
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.hilt.navigation.compose.hiltNavHost
-import androidx.navigation.NavHostController
-import androidx.navigation.NavOptions
-import androidx.navigation.compose.NavHostDestination
-import androidx.navigation.composable
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LocalContext
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import com.moviebox.storage.ConfigStore
 import com.moviebox.storage.HistoryStore
 import com.moviebox.storage.FavoritesStore
-import dagger.hilt.android.AndroidEntryPoint
-import dagger.hilt.android.Hilt
-import kotlinx.coroutines.sync.Mutex
-
-@Hilt
-class MainActivity : ComponentActivity() {
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        ConfigStore.init(this)
-        HistoryStore.init(this)
-        FavoritesStore.init(this)
-        setContent {
-            MovieBoxApplication()
-        }
-    }
-}
 
 @Composable
-fun MovieBoxApplication() {
-    val context = remember { LocalContext.current }
+fun MovieBoxComposeApp() {
+    val context = LocalContext.current
 
     // Initialize singleton stores
     DisposableEffect(Unit) {
@@ -42,14 +30,11 @@ fun MovieBoxApplication() {
 
     val navController = rememberNavController()
 
-    ScaffoldTheme(
-        // Apply the selected theme
-        MaterialTheme,
-    ) {
+    MovieBoxScaffold(darkTheme = true) {
         NavHost(
             navController = navController,
             startDestination = "home",
-            modifier = Modifier.fillMaxSize(),
+            modifier = androidx.compose.ui.Modifier.fillMaxSize(),
         ) {
             composable("home") {
                 HomeScreen(

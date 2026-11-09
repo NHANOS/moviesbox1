@@ -1,27 +1,33 @@
 # Gradle cache and build outputs
-.gradle/
-build/
+/.gradle/
+/app/.gradle/
+/build/
+/app/build/
 /local.properties
 
 # Android Studio / IntelliJ
 /.idea/
-*.iml
+/*.iml
 
 # Keystores and signing files
-*.jks
-*.bks
-*.keystore
-*.p12
-*.pfx
-*.pem
+/*.jks
+/*.bks
+/*.keystore
+/*.p12
+/*.pfx
+/*.pem
 /.signing/
 
 # APK / AAB outputs
-*.apk
-*.aab
+/*.apk
+/*.aab
+/app/*.apk
+/app/*.aab
+/app/build/outputs/apk/
+/app/build/outputs/aab/
 
-# Kotlin compiler
-.kotlin/
+# Local configuration
+/gradle.properties
 
 # OS files
 .DS_Store
@@ -31,3 +37,15 @@ Thumbs.db
 *.bak
 *.tmp
 *.temp
+
+# Kotlin compiler
+/.kotlin/
+/app/.kotlin/
+
+# Build tools
+/app/build/tmp/
+
+# Local resources
+/app/src/main/.local/
+/app/src/debug/.local/
+/app/src/release/.local/
